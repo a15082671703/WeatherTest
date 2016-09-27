@@ -9,12 +9,12 @@ import android.net.NetworkInfo;
  */
 
 public class NetUtil {
-   public static int getNetworkState(Context context) {
-       public static final int NETWORN_NONE = 0;
-       public static final int NETWORN_WIFI = 1;
-       public static final int NETWORN_MOBILE = 2;
-       ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-       NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
+    public static final int NETWORN_NONE = 0;
+    public static final int NETWORN_WIFI = 1;
+    public static final int NETWORN_MOBILE = 2;
+    public static int getNetworkState(Context context) {
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connManager.getActiveNetworkInfo();
        if(networkInfo == null){
            return NETWORN_NONE;
        }
@@ -27,6 +27,5 @@ public class NetUtil {
        }
        return NETWORN_NONE;
    }
-
 }
 
