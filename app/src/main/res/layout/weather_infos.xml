@@ -216,14 +216,15 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    android:src="@drawable/biz_plugin_weather_qing" />
+                    android:src="@drawable/biz_plugin_weather_qing"
+                    android:layout_marginLeft="-30dp"/>
                 <!--	今日星期	-->
                 <TextView
                     android:id="@+id/week_today"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="5dip"
+                    android:layout_marginLeft="2dip"
                     android:layout_toRightOf="@id/weather_img"
                     android:paddingTop="30dip"
                     android:singleLine="true"

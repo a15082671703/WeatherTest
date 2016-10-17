@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView mUpdateBtn;
 
     private TextView cityTv, timeTv, humidityTv, pmDataTv, pmQualityTv,
-            temperatureTv, climateTv, windTv, city_name_Tv, weekTv;
+            temperatureTv, climateTv, windTv, city_name_Tv, weekTv,temperature_numTv;
     private ImageView weatherImg, pmImg;
 
     /*更新数据*/
@@ -246,6 +246,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         climateTv = (TextView) findViewById(R.id.climate);
         windTv = (TextView) findViewById(R.id.wind);
         weatherImg = (ImageView) findViewById(R.id.weather_img);
+        temperature_numTv = (TextView) findViewById(R.id.temperature_num) ;
         city_name_Tv.setText("N/A");
         cityTv.setText("N/A");
         timeTv.setText("N/A");
@@ -256,6 +257,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         temperatureTv.setText("N/A");
         climateTv.setText("N/A");
         windTv.setText("N/A");
+        temperature_numTv.setText("N/A");
     }
 
     /*修改控件内容*/
@@ -267,13 +269,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         pmDataTv.setText(todayWeather.getPm25());
         pmQualityTv.setText(todayWeather.getQuality());
         weekTv.setText(todayWeather.getDate());
-        temperatureTv.setText(todayWeather.getHigh() + "~" + todayWeather.getLow());
+        temperatureTv.setText(todayWeather.getLow() + "~" + todayWeather.getHigh());
         climateTv.setText(todayWeather.getType());
         windTv.setText("风力:" + todayWeather.getFengli());
+        temperature_numTv.setText(todayWeather.getWendu()+"℃");
         Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
     }
-
-
-
-
 }
