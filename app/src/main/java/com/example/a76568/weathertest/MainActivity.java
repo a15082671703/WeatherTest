@@ -2,8 +2,9 @@ package com.example.a76568.weathertest;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.media.Image;
+
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -22,8 +23,6 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.logging.Handler;
 
 
 import cn.edu.pku.hanqin.bean.TodayWeather;
@@ -40,7 +39,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
             temperatureTv, climateTv, windTv, city_name_Tv, weekTv;
     private ImageView weatherImg, pmImg;
 
+    /*更新数据*/
     private static final int UPDATE_TODAY_WEATHER = 1;
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case UPDATE_TODAY_WEATHER:
+                    updateTodayWeather((TodayWeather) msg.obj);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     /*测试网络*/
@@ -262,18 +273,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
     }
 
-    /*更新数据*/
-    private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-                case UPDATE_TODAY_WEATHER:
-                    updateTodayWeather((TodayWeather) msg.obj);
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+
 
 
 }
