@@ -1,11 +1,13 @@
 package com.example.a76568.weathertest;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,9 +38,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ImageView mUpdateBtn;
 
     private TextView cityTv, timeTv, humidityTv, pmDataTv, pmQualityTv,
-            temperatureTv, climateTv, windTv, city_name_Tv, weekTv,temperature_numTv;
-    private ImageView weatherImg, pmImg;
-
+            temperatureTv, climateTv, windTv, city_name_Tv, weekTv, temperature_numTv;
+    ;
+    private ImageView weatherImg, pmImg, mCitySelect;
     /*更新数据*/
     private static final int UPDATE_TODAY_WEATHER = 1;
     private Handler mHandler = new Handler() {
@@ -69,6 +71,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mUpdateBtn = (ImageView) findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
+        mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
+        mCitySelect.setOnClickListener(this);
         initView();
     }
 
@@ -121,9 +125,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     /*点击刷新按钮*/
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.title_city_manager) {
+            Intent inten = new Intent(this, SelectCity.class);
+            startActivityForResult(inten, 1);
+        }
+
         if (view.getId() == R.id.title_update_btn) {
             SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
-            String cityCode = sharedPreferences.getString("main_city_code", "101010100");
+            String cityCode = sharedPreferences.getString("main_city_code", "101160101");
             Log.d("myWeather", cityCode);
 
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
@@ -246,7 +255,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         climateTv = (TextView) findViewById(R.id.climate);
         windTv = (TextView) findViewById(R.id.wind);
         weatherImg = (ImageView) findViewById(R.id.weather_img);
-        temperature_numTv = (TextView) findViewById(R.id.temperature_num) ;
+        pmImg = (ImageView) findViewById(R.id.pm2_5_img);
+        temperature_numTv = (TextView) findViewById(R.id.temperature_num);
         city_name_Tv.setText("N/A");
         cityTv.setText("N/A");
         timeTv.setText("N/A");
@@ -258,6 +268,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         climateTv.setText("N/A");
         windTv.setText("N/A");
         temperature_numTv.setText("N/A");
+        pmImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_0_50));
+        weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_qing));
     }
 
     /*修改控件内容*/
@@ -267,12 +279,94 @@ public class MainActivity extends Activity implements View.OnClickListener {
         timeTv.setText(todayWeather.getUpdatetime() + "发布");
         humidityTv.setText("湿度：" + todayWeather.getShidu());
         pmDataTv.setText(todayWeather.getPm25());
+        try {
+            int a = Integer.parseInt(todayWeather.getPm25());
+            if (a < 50) {
+                pmImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_0_50));
+            } else if (a < 100) {
+                pmImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_51_100));
+            } else if (a < 150) {
+                pmImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_101_150));
+            } else if (a < 200) {
+                pmImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_151_200));
+            } else if (a < 300) {
+                pmImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_201_300));
+            } else {
+                pmImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_greater_300));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
         pmQualityTv.setText(todayWeather.getQuality());
         weekTv.setText(todayWeather.getDate());
         temperatureTv.setText(todayWeather.getLow() + "~" + todayWeather.getHigh());
         climateTv.setText(todayWeather.getType());
+        try {
+            String tianqi = todayWeather.getType();
+            Log.d("myWeather", tianqi);
+            if (tianqi == "晴") {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_zhongyu));
+            } else if (tianqi.equals("暴雪")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_baoxue));
+            } else if (tianqi.equals("暴雨")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_baoyu));
+            } else if (tianqi.equals("大暴雨")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_dabaoyu));
+            } else if (tianqi.equals("大雪")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_daxue));
+            } else if (tianqi.equals("大雨")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_dayu));
+            } else if (tianqi.equals("多云")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_duoyun));
+            } else if (tianqi.equals("雷阵雨")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_leizhenyu));
+            } else if (tianqi.equals("雷阵雨冰雹")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_leizhenyubingbao));
+            } else if (tianqi.equals("沙尘暴")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_shachenbao));
+            } else if (tianqi.equals("特大暴雨")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_tedabaoyu));
+            } else if (tianqi.equals("雾")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_wu));
+            } else if (tianqi.equals("小雪")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_xiaoxue));
+            } else if (tianqi.equals("小雨")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_xiaoyu));
+            } else if (tianqi.equals("阴")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_yin));
+            } else if (tianqi.equals("雨夹雪")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_yujiaxue));
+            } else if (tianqi.equals("阵雪")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_zhenxue));
+            } else if (tianqi.equals("阵雨")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_zhenyu));
+            } else if (tianqi.equals("中雪")) {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_zhongxue));
+            } else {
+                weatherImg.setImageDrawable(getResources().getDrawable(R.drawable.biz_plugin_weather_qing));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
         windTv.setText("风力:" + todayWeather.getFengli());
-        temperature_numTv.setText(todayWeather.getWendu()+"℃");
+        temperature_numTv.setText(todayWeather.getWendu() + "℃");
+
         Toast.makeText(MainActivity.this, "更新成功！", Toast.LENGTH_SHORT).show();
+    }
+
+    /*将得到的返回数据再修改一下城市*/
+    protected void onActivityResult(int RequestCode, int ResultCode, Intent data) {
+        if (RequestCode == 1 && ResultCode == RESULT_OK) {
+            String newCityCode = data.getStringExtra("cityCode");
+            Log.d("myWeather", "选择出来的城市代码" + newCityCode);
+
+            if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
+                Log.d("myWeather", "网络可以~");
+                queryWeatherCode(newCityCode);
+            } else {
+                Log.d("myWeather", "网络爆炸");
+                Toast.makeText(MainActivity.this, "网络炸了！", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
