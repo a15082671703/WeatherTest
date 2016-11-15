@@ -55,7 +55,7 @@ public class Weatherapplication extends Application{
             i++;
             String cityName = city.getCity();
             String cityCode = city.getNumber();
-            Log.d(TAG,cityCode+":"+cityName);
+    //        Log.d(TAG,cityCode+":"+cityName);
         }
         Log.d(TAG,"i="+i);
         return true;
@@ -76,7 +76,6 @@ public class Weatherapplication extends Application{
         File db = new File(path);
         Log.d(TAG,path);
         if (!db.exists()) {
-
             String pathfolder = "/data"
                     + Environment.getDataDirectory().getAbsolutePath()
                     + File.separator + getPackageName()

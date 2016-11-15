@@ -73,11 +73,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mUpdateBtn.setOnClickListener(this);
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
+        startService(new Intent(getBaseContext(),WeatherService.class));
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        TodayWeather todayWeather = null;
+        SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+        String Default = sharedPreferences.getString("DefaultWeather3","NO_info");
+//
         initView();
+        Log.d("good",Default);
+        if(Default!="NO_info") {
+            todayWeather = parsXML(Default);
+            if (todayWeather != null) {
+                Log.d("myWeather", todayWeather.toString());
+                Message msg = new Message();
+                msg.what = UPDATE_TODAY_WEATHER;
+                msg.obj = todayWeather;
+                mHandler.sendMessage(msg);
+            }
+        }
+//
     }
 
     /*等待接受数据*/
-    private void queryWeatherCode(String cityCode) {
+    public void queryWeatherCode(String cityCode) {
         final String address = "http://wthrcdn.etouch.cn/WeatherApi?citykey=" + cityCode;
         Log.d("myWeather", address);
         new Thread(new Runnable() {
@@ -100,6 +123,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         Log.d("myWeather", str);
                     }
                     String responsStr = response.toString();
+                    //
+                    if(responsStr!=null){
+                        SharedPreferences mySharedPreferences = getSharedPreferences("config",
+                                Activity.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = mySharedPreferences.edit();
+                        editor.putString("DefaultWeather3",responsStr);
+                        editor.commit();
+                    }
+                    //
                     Log.d("myWeather", responsStr);
                     todayWeather = parsXML(responsStr);
                     if (todayWeather != null) {
@@ -190,7 +222,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             } else if (xmlPullParser.getName().equals("pm25")) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setPm25(xmlPullParser.getText());
-                                Log.d("myWeather", "pm25:    " + xmlPullParser.getText());
+                               Log.d("myWeather", "pm25:    " + xmlPullParser.getText());
                             } else if (xmlPullParser.getName().equals("quality")) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setQuality(xmlPullParser.getText());
@@ -359,7 +391,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (RequestCode == 1 && ResultCode == RESULT_OK) {
             String newCityCode = data.getStringExtra("cityCode");
             Log.d("myWeather", "选择出来的城市代码" + newCityCode);
-
             if (NetUtil.getNetworkState(this) != NetUtil.NETWORN_NONE) {
                 Log.d("myWeather", "网络可以~");
                 queryWeatherCode(newCityCode);
