@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="fill_parent"
@@ -36,27 +35,38 @@
             android:textSize="22.0sp" />
 
         <ImageView
+            android:id="@+id/title_update_progress"
+            android:layout_width="45.0dip"
+            android:layout_height="45.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
+            android:src="@drawable/title_update"
+            android:visibility="invisible"
+            style="@style/title_progressbar_style"/>
+        <ImageView
             android:id="@+id/title_update_btn"
             android:layout_width="45.0dip"
             android:layout_height="45.0dip"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
             android:src="@drawable/title_update"
-            android:visibility="visible" />
-
+            android:visibility="visible"
+            style="@style/title_progressbar_style"/>
         <ImageView
             android:id="@+id/title_share"
             android:layout_width="45.0dip"
             android:layout_height="45.0dip"
-            android:layout_toLeftOf="@id/title_update_btn"
-            android:src="@drawable/title_share" />
-
+            android:layout_toLeftOf="@id/title_update_progress"
+            android:src="@drawable/title_share"
+            android:visibility="visible"/>
         <ImageView
             android:id="@+id/title_location"
             android:layout_width="45.0dip"
             android:layout_height="45.0dip"
             android:layout_toLeftOf="@id/title_share"
             android:src="@drawable/base_action_bar_action_city" />
+
+
     </RelativeLayout>
 
     <LinearLayout
@@ -273,6 +283,13 @@
             </RelativeLayout>
         </RelativeLayout>
         <!--	六日天气信息	-->
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/viewpager"
+            android:background="#00ffffff"
+            android:paddingBottom="60dip"></android.support.v4.view.ViewPager>
+
         <!--	广告等信息	-->
     </LinearLayout>
 </RelativeLayout>

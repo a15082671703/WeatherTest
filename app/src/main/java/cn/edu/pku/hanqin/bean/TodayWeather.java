@@ -16,6 +16,26 @@ public class TodayWeather {
     private String high;
     private String low;
     private String type;
+    public OtherWeather other1 = new OtherWeather();
+    public OtherWeather other2 = new OtherWeather();
+    public OtherWeather other3 = new OtherWeather();
+    public OtherWeather other4 = new OtherWeather();
+    public OtherWeather other5 = new OtherWeather();
+    public OtherWeather other6 = new OtherWeather();
+    public TodayWeather() {
+        city = "";
+        updatetime = "";
+        wendu = "";
+        shidu = "";
+        pm25 = "";
+        quality = "";
+        fengxiang = "";
+        fengli = "";
+        date = "";
+        high = "";
+        low = "";
+        type = "";
+    }
 
     public String getCity() {
         return city;
@@ -114,20 +134,20 @@ public class TodayWeather {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "TodayWeather{" +
                 "city=<" + city + '>' +
-                ",updatetime=<" + updatetime + '>'+
-                ",wendu=<" + wendu + '>'+
-                ",shidu=<" + shidu + '>'+
-                ",pm25=<" + pm25 + '>'+
-                ",quality=<" + quality + '>'+
-                ",fengxiang=<" + fengxiang + '>'+
-                ",fengli=<" + fengli + '>'+
-                ",date=<" + date + '>'+
-                ",high=<" + high + '>'+
-                ",low=<" + low + '>'+
-                ",type=<" + type + '>'+
+                ",updatetime=<" + updatetime + '>' +
+                ",wendu=<" + wendu + '>' +
+                ",shidu=<" + shidu + '>' +
+                ",pm25=<" + pm25 + '>' +
+                ",quality=<" + quality + '>' +
+                ",fengxiang=<" + fengxiang + '>' +
+                ",fengli=<" + fengli + '>' +
+                ",date=<" + date + '>' +
+                ",high=<" + high + '>' +
+                ",low=<" + low + '>' +
+                ",type=<" + type + '>' +
                 '}';
     }
 }

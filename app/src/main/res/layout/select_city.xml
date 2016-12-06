@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:orientation="vertical">
     //title
     <RelativeLayout
@@ -32,18 +32,87 @@
             android:text="此时城市：北京"
             android:textColor="#ffffffff"
             android:textSize="22.0sp" />
-        <ImageView
-            android:id="@+id/title_update_btn"
-            android:layout_width="45.0dip"
-            android:layout_height="45.0dip"
-            android:layout_alignParentRight="true"
+    </RelativeLayout>
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_bar"
+        android:hint="搜索地区(中文)"
+        android:layout_margin="5dip"
+        android:layout_marginRight="20dp"
+        android:layout_alignBottom="@id/title"
+        android:drawableLeft="@drawable/magnifying_glass"
+        android:drawablePadding="5dip"
+        android:singleLine="true"
+        android:background="@drawable/contact_search_box_edittext_keyword_background"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFFFF"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+
+
+            <ListView
+                android:id="@+id/city_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:dividerHeight="0.8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="30dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right"
+            android:background="#1e99cc33"
+            >
+            <cn.edu.pku.hanqin.view.SideBar
+                android:id="@+id/sidebar"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/centerHintTv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:textColor="#6699ff"
+            android:text="A"
+            android:visibility="gone"
             android:layout_gravity="center"
-            android:src="@drawable/title_update"
-            android:visibility="visible" />
+            android:background="#1e000000"
+            />
+    </FrameLayout>
+    </LinearLayout>
+   <!-- <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip">
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_bar"
+        android:hint="搜索地区(中文)"
+        android:layout_margin="5dip"
+        android:drawableLeft="@drawable/magnifying_glass"
+        android:drawablePadding="5dip"
+        android:layout_weight="1"
+        android:singleLine="true"
+        android:background="@drawable/contact_search_box_edittext_keyword_background"/>
     </RelativeLayout>
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/city_list">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/city_list"
+        android:dividerHeight="0.8dp">
     </ListView>
-</LinearLayout>
+</LinearLayout>-->

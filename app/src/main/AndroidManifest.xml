@@ -19,9 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SelectCity">
-
         </activity>
+        <activity android:name=".SelectCity2"></activity>
         <service android:name=".WeatherService"></service>
+        <service android:name=".ExampleService"></service>
     </application>
 
 </manifest>
