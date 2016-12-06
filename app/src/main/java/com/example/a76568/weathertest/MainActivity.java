@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+
+
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,9 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -58,7 +63,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private ViewPager vp;
     private List<View> Views;
 
-    /*更新数据*/
+
+    //位置更新
+    public LocationClient mLocationClient = null;
+    public BDLocationListener myListener = new MyLocationListener();
+    //
+
+
+    //    /*更新数据*/
     private static final int UPDATE_TODAY_WEATHER = 1;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -99,6 +111,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bindService(intent,mConnection, BIND_AUTO_CREATE);
         stopService(intent);*/
         initViewpager();
+
+        //位置更新
+        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
+        mLocationClient.registerLocationListener( myListener );    //注册监听函数
+        //
+        mLocationClient.start();
     }
 
     private ServiceConnection mConnection = new ServiceConnection()
