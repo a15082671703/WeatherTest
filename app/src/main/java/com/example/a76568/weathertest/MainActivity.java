@@ -1,18 +1,23 @@
 package com.example.a76568.weathertest;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 
 
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+//import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,6 +89,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     };
 
+
     @Override
     /*测试网络*/
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +111,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mUpdatePro = (ImageView)findViewById(R.id.title_update_progress) ;
         mExample = (ImageView) findViewById(R.id.title_share);
         mExample.setOnClickListener(this);
-        startService(new Intent(getBaseContext(),WeatherService.class));
+       // startService(new Intent(getBaseContext(),WeatherService.class));
       //  startService(new Intent(getBaseContext(),ExampleService.class));
 /*        Intent intent = new Intent(getBaseContext(),ExampleService.class);
         bindService(intent,mConnection, BIND_AUTO_CREATE);
@@ -116,7 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
         mLocationClient.registerLocationListener( myListener );    //注册监听函数
         //
-        mLocationClient.start();
+
     }
 
     private ServiceConnection mConnection = new ServiceConnection()
@@ -228,7 +234,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }).start();
     }
 
-    /*点击刷新按钮*/
+    /*点击按钮*/
     @Override
     public void onClick(View view) {
         Animation operatingAnim = AnimationUtils.loadAnimation(this, R.anim.title_update_anim);
@@ -259,6 +265,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }
         if (view.getId() == R.id.title_share) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE},0);
+            }
+            Log.d("位置","开始");
+            mLocationClient.start();
+            Log.d("位置","结束");
             stopService(new Intent(getBaseContext(),ExampleService.class));
         }
     }
