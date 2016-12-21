@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -20,13 +23,13 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Filter;
 
 import cn.edu.pku.hanqin.app.Weatherapplication;
 import cn.edu.pku.hanqin.bean.City;
@@ -50,8 +53,12 @@ public class SelectCity extends Activity implements View.OnClickListener {
     ArrayList<String> city = new ArrayList<String>();
     ArrayList<String> cityId = new ArrayList<String>();
 
-    ArrayList<String> mData = new ArrayList<String>();   //用作搜索的城市
+    ArrayList<String> mData = new ArrayList<String>();   //all城市
+    ArrayList<String> mDataSub = new ArrayList<String>();   //用作搜索的城市
     private EditText mSearch;
+    Handler myhandler = new Handler();
+    ArrayAdapter<String> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,23 +67,24 @@ public class SelectCity extends Activity implements View.OnClickListener {
         mBackBtn = (ImageView) findViewById(R.id.back_normal);
         mBackBtn.setOnClickListener(this);
 
-        mSearch = (EditText) findViewById(R.id.search_bar);
+
 
         //
-
+        set_mSearch_TextChanged();
         App = (Weatherapplication) getApplication();
         data = App.getCityList();
         int i = 0;
         while (i < data.size()) {
-            city.add(data.get(i).getCity().toString());
-            cityId.add(data.get(i++).getNumber().toString());
-            tempdata = data.get(i);
-            mData.add(tempdata.getFirstPY().toString()+'-'+tempdata.getCity().toString()+'-'+tempdata.getNumber().toString());
+            // city.add(data.get(i).getCity().toString());
+            // cityId.add(data.get(i++).getNumber().toString());
+            tempdata = data.get(i++);
+            mData.add(tempdata.getProvince().toString() + '(' + tempdata.getNumber().toString() + ')' + '-' + tempdata.getAllFristPY().toString() + tempdata.getCity().toString());
         }
         //
-
+        getmDataSub(mDataSub,"");
+        //
         listView = (ListView) findViewById(R.id.city_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SelectCity.this, android.R.layout.simple_list_item_1, mData);
+        adapter = new ArrayAdapter<String>(SelectCity.this, android.R.layout.simple_list_item_1, mDataSub);
         //missing getData()
         listView.setAdapter(adapter);
 
@@ -87,9 +95,12 @@ public class SelectCity extends Activity implements View.OnClickListener {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(SelectCity.this, "您单击了:" + city.get(i), Toast.LENGTH_SHORT).show();
-                SelectedId = cityId.get(i);
-                selectcity.setText("您选择的地区："+city.get(i));
+                int citybegin = mDataSub.get(i).indexOf('-');
+                int idbegin = mDataSub.get(i).indexOf('(');
+                Toast.makeText(SelectCity.this, "您单击了:" + mDataSub.get(i).substring(citybegin+1), Toast.LENGTH_SHORT).show();
+                SelectedId = mDataSub.get(i).substring(idbegin+1,idbegin+10);
+                Log.d("SelectedId",SelectedId);
+                selectcity.setText("您选择的地区："+mDataSub.get(i).substring(citybegin+2));
             }
         });
         //
@@ -117,4 +128,64 @@ public class SelectCity extends Activity implements View.OnClickListener {
         }
     }
 
+
+
+    //改变
+    private void set_mSearch_TextChanged()
+    {
+        mSearch = (EditText) findViewById(R.id.search_bar);
+
+        mSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                // TODO Auto-generated method stub
+                //这个应该是在改变的时候会做的动作吧，具体还没用到过。
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+                //这是文本框改变之前会执行的动作
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                /**这是文本框改变之后 会执行的动作
+                 * 因为我们要做的就是，在文本框改变的同时，我们的listview的数据也进行相应的变动，并且如一的显示在界面上。
+                 * 所以这里我们就需要加上数据的修改的动作了。
+                 */
+                Log.d("sousuo","begin");
+                    myhandler.post(mChanged);
+                Log.d("sousuo","end");
+            }
+        });
+    }
+    Runnable mChanged = new Runnable() {
+
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            String data = mSearch.getText().toString();
+            mDataSub.clear();
+
+            getmDataSub(mDataSub, data);
+
+            adapter.notifyDataSetChanged();
+
+        }
+    };
+
+    private void getmDataSub(ArrayList<String> mDataSubs, String data)
+    {
+        int length = mData.size();
+        Log.d("length","length"+length);
+        for(int i = 0; i < length; ++i){
+            if(mData.get(i).contains(data) || data.length() == 0){
+                mDataSubs.add(mData.get(i));
+            }
+        }
+    }
 }
