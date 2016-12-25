@@ -47,6 +47,7 @@ public class SelectCity extends Activity implements View.OnClickListener {
     private Weatherapplication App;
 
     private String SelectedId=null;
+    private String SelectedName=null;
     private TextView cityName;
 
     private TextView selectcity;
@@ -92,6 +93,10 @@ public class SelectCity extends Activity implements View.OnClickListener {
         cityName =(TextView)findViewById(R.id. title_city_name);
         selectcity = (TextView)findViewById(R.id.title_city_name);
 
+        //初始化具体选择情况
+        SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
+        String cityName = sharedPreferences.getString("main_city_name", "北京");
+        selectcity.setText("您此时的地区："+cityName);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -99,8 +104,8 @@ public class SelectCity extends Activity implements View.OnClickListener {
                 int idbegin = mDataSub.get(i).indexOf('(');
                 Toast.makeText(SelectCity.this, "您单击了:" + mDataSub.get(i).substring(citybegin+1), Toast.LENGTH_SHORT).show();
                 SelectedId = mDataSub.get(i).substring(idbegin+1,idbegin+10);
-                Log.d("SelectedId",SelectedId);
-                selectcity.setText("您选择的地区："+mDataSub.get(i).substring(citybegin+2));
+                SelectedName = mDataSub.get(i).substring(citybegin+1);
+                selectcity.setText("您选择的地区："+SelectedName);
             }
         });
         //
@@ -119,6 +124,7 @@ public class SelectCity extends Activity implements View.OnClickListener {
                             Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = mySharedPreferences.edit();
                     editor.putString("main_city_code", SelectedId);
+                    editor.putString("main_city_name", SelectedName);
                     editor.commit();
                 }
                 finish();

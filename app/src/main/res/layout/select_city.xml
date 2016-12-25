@@ -32,6 +32,12 @@
             android:text="此时城市：北京"
             android:textColor="#ffffffff"
             android:textSize="22.0sp" />
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:layout_toLeftOf="@+id/title_city_name"
+            android:focusableInTouchMode="true"></LinearLayout>
     </RelativeLayout>
     <EditText
         android:layout_width="fill_parent"
@@ -55,9 +61,6 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical" >
-
-
-
             <ListView
                 android:id="@+id/city_list"
                 android:layout_width="fill_parent"
@@ -93,26 +96,3 @@
             />
     </FrameLayout>
     </LinearLayout>
-   <!-- <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="3dip">
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/search_bar"
-        android:hint="搜索地区(中文)"
-        android:layout_margin="5dip"
-        android:drawableLeft="@drawable/magnifying_glass"
-        android:drawablePadding="5dip"
-        android:layout_weight="1"
-        android:singleLine="true"
-        android:background="@drawable/contact_search_box_edittext_keyword_background"/>
-    </RelativeLayout>
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/city_list"
-        android:dividerHeight="0.8dp">
-    </ListView>
-</LinearLayout>-->

@@ -54,7 +54,7 @@ import cn.edu.pku.hanqin.util.NetUtil;
  * Created by 76568 on 2016/9/20 0020.
  */
 public class MainActivity extends Activity implements View.OnClickListener {
-    private ImageView mUpdateBtn , mExample , mUpdatePro;
+    private ImageView mUpdateBtn , mAddress , mUpdatePro;
     //
     ExampleService mService;
     //
@@ -109,8 +109,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mCitySelect = (ImageView) findViewById(R.id.title_city_manager);
         mCitySelect.setOnClickListener(this);
         mUpdatePro = (ImageView)findViewById(R.id.title_update_progress) ;
-        mExample = (ImageView) findViewById(R.id.title_share);
-        mExample.setOnClickListener(this);
+        mAddress = (ImageView) findViewById(R.id.title_update_btn);
+        mAddress.setOnClickListener(this);
        // startService(new Intent(getBaseContext(),WeatherService.class));
       //  startService(new Intent(getBaseContext(),ExampleService.class));
 /*        Intent intent = new Intent(getBaseContext(),ExampleService.class);
@@ -264,7 +264,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Toast.makeText(MainActivity.this, "网络炸了！", Toast.LENGTH_LONG).show();
             }
         }
-        if (view.getId() == R.id.title_share) {
+        if (view.getId() == R.id.title_update_btn) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE},0);
