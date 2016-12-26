@@ -62,7 +62,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             temperatureTv, climateTv, windTv, city_name_Tv, weekTv, temperature_numTv;
 
     private TextView[] Otherdatatv , Otherwendutv ,Otherfengtv , Othertypetv;
-    private ImageView weatherImg, pmImg, mCitySelect;
+    private ImageView weatherImg, pmImg, mCitySelect ,mshare;
     //viewpager
     private ViewPagerAdapter vpa;
     private ViewPager vp;
@@ -111,6 +111,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mUpdatePro = (ImageView)findViewById(R.id.title_update_progress) ;
         mAddress = (ImageView) findViewById(R.id.title_update_btn);
         mAddress.setOnClickListener(this);
+        mshare = (ImageView) findViewById(R.id.title_share);
+        mshare.setOnClickListener(this);
        // startService(new Intent(getBaseContext(),WeatherService.class));
       //  startService(new Intent(getBaseContext(),ExampleService.class));
 /*        Intent intent = new Intent(getBaseContext(),ExampleService.class);
@@ -273,6 +275,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             mLocationClient.start();
             Log.d("位置","结束");
             stopService(new Intent(getBaseContext(),ExampleService.class));
+        }
+        if(view.getId() == R.id.title_share){
+            Intent inten = new Intent(this, Share.class);
+            startActivityForResult(inten, 1);
         }
     }
 

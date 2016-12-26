@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:id="@+id/btn_begin"
             android:text="开始体验吧"
-            android:textSize="10pt"
+            android:textSize="13pt"
             android:background="#9900ff33"/>
     </LinearLayout>
 </RelativeLayout>

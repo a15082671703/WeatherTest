@@ -37,6 +37,7 @@ public class Welcome extends Activity implements ViewPager.OnPageChangeListener{
 
             @Override
             public void onClick(View v) {
+                btn.setText("请等待...");
                 Intent i = new Intent(Welcome.this,MainActivity.class);
                 startActivity(i);
                 finish();

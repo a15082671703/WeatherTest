@@ -44,6 +44,7 @@
         </activity>
         <activity android:name=".SelectCity">
         </activity>
+        <activity android:name=".Share"></activity>
         <service android:name=".WeatherService"></service>
         <service android:name=".ExampleService"></service>
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
